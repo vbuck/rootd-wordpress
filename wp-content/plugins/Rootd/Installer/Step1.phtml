@@ -1,0 +1,12 @@
+<?php /* @var $this Rootd_Installer_Step1 */ ?>
+<div class="update-nag step-content">
+	<form action="<?php echo $this->getAction(); ?>" method="post" enctype="multipart/form-data">
+		<span class="install-progress"><?php echo $this->getProgress(); ?></span>
+		<h3><?php _e('Thanks for trying the Rootd Framework!'); ?></h3>
+		<p><?php _e("We'll need to download and install some files to complete the setup. Click the button below."); ?></p>
+		<p>
+			<input type="submit" class="button action" value="<?php _e('Continue Installation'); ?>">
+			<a href="javascript:;" data-alert="<?php _e("Installing the Rootd Framework means adding a must-use plugin to WordPress. This means Rootd is not a traditional plugin. But don't worry, we'll guide you through the process and you'll be writing awesome code shortly."); ?>" class="dashicons dashicons-editor-help"></a>
+		</p>
+	</form>
+</div>

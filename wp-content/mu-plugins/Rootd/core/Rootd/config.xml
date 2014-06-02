@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!--
+
+/**
+ * Rootd Framework core module configuration.
+ *
+ * This configuration file demonstrates how you can
+ * create your own WordPress plugin as a module which
+ * includes multiple features. For example, the
+ * <modules/rootd/features> node can contain several
+ * WordPress widgets that you can toggle on or off
+ * independently from the module (plugin) active state.
+ *
+ * @package  	Rootd
+ * @author   	Rick Buczynski <me@rickbuczynski.com>
+ * @copyright   2014 Rick Buczynski. All Rights Reserved.
+ */
+
+-->
+<config>
+	<modules>
+		<rootd>
+			<!-- The base class (module) prefix -->
+			<class>Rootd</class>
+			<features>
+				<postnote>
+					<!-- When set to true, the feature will be enabled automatically -->
+					<enabled>true</enabled>
+					<!-- Specifies the type of feature, which controls how it is registered -->
+					<type>meta</type>
+					<!-- The remaining portion of the class name after the base prefix -->
+					<class>Postnote_Meta</class>
+				</postnote>
+			</features>
+		</rootd>
+	</modules>
+</config>

@@ -1,0 +1,11 @@
+<?php /* @var $this Rootd_Installer_Step3 */ ?>
+<div class="update-nag step-content">
+	<form action="<?php echo $this->getAction(); ?>" method="post" enctype="multipart/form-data">
+		<span class="install-progress"><?php echo $this->getProgress(); ?></span>
+		<h3><?php _e('Installation Complete'); ?></h3>
+		<p><?php _e("You're ready to go. Check out the docs for developing sweet plugins, and we'll keep you up to date with new features. Thanks for using the Rootd Framework!"); ?></p>
+		<p>
+			<input type="submit" class="button action" value="<?php _e('Finish'); ?>">
+		</p>
+	</form>
+</div>

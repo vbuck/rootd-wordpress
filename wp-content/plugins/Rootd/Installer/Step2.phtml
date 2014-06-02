@@ -1,0 +1,22 @@
+<?php /* @var $this Rootd_Installer_Step2 */ ?>
+<div class="update-nag step-content">
+	<form action="<?php echo $this->getAction(); ?>" method="post" enctype="multipart/form-data">
+		<span class="install-progress"><?php echo $this->getProgress(); ?></span>
+		<?php if($this->hasErrors()) : ?>
+		<h3><?php _e('Oops! Something went wrong:'); ?></h3>
+		<ul>
+			<?php foreach($this->getErrors() as $message) : ?>
+			<li><?php echo $message; ?></li>
+			<?php endforeach; ?>
+		</ul>
+		<p><?php _e('Please fix before continuing.'); ?></p>
+		<?php else : ?>
+		<h3><?php _e('System Check OK'); ?></h3>
+		<p><?php _e("Your system passed inspection, and we're able to download the files for installation. Click to continue."); ?></p>
+		<p>
+			<input type="submit" class="button action" value="<?php _e('Download Files'); ?>">
+			<a href="javascript:;" data-alert="<?php _e("Once downloaded, the framework will be installed to your mu-plugins directory. Some tests will be run to make sure it's working, and then you're ready to go."); ?>" class="dashicons dashicons-editor-help"></a>
+		</p>
+		<?php endif; ?>
+	</form>
+</div>

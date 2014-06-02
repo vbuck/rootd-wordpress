@@ -1,0 +1,27 @@
+/**
+ * Rootd Framework installer stylesheet.
+ *
+ * @package  	Rootd
+ * @author   	Rick Buczynski <me@rickbuczynski.com>
+ * @copyright   2014 Rick Buczynski. All Rights Reserved.
+ */
+
+.rootd-installer .step-content {
+	display: block;
+	background-image: url('../wp-content/plugins/Rootd/media/install-bg.png');
+	background-repeat: no-repeat;
+	background-position: 0 100%;
+	border-left-color: #a94d4f;
+	padding-left: 220px;
+}
+
+.rootd-installer .install-progress {
+	float: right;
+	font-weight: bold;
+	font-size: 0.9em;
+	color: #808080;
+}
+
+.rootd-installer .dashicons {
+	line-height: 28px;
+}

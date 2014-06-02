@@ -1,0 +1,37 @@
+<?php
+
+/**
+ * Post Notes meta box template.
+ *
+ * @package  	Rootd
+ * @author   	Rick Buczynski <me@rickbuczynski.com>
+ * @copyright   2014 Rick Buczynski. All Rights Reserved.
+ *
+ * @var 		$this Rootd_Postnote_Meta
+ */
+
+// The post object is always available here
+$post = $this->getPost();
+
+// A nonce field is required to save the meta data
+echo $this->getNonceHtml();
+?>
+<div>
+	<p class="note"><?php echo $this->__('Keep notes about your post (todo items, draft notes, brainstorm ideas, etc.).'); ?></p>
+	<textarea 
+		name="postnote_content" 
+		id="postnote_content" 
+		style="width:100%;height:150px;"
+		><?php 
+
+			/**
+			 * All post meta data is automatically retrieved for you.
+			 * You can access it any time on the post object, by
+			 * using its magic getter method. For example, if the
+			 * field name is "postnote_content," its translated
+			 * getter method becomes "getPostnoteContent."
+			 */
+			echo $post->getPostnoteContent(); 
+
+		?></textarea>
+</div>
