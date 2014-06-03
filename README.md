@@ -6,7 +6,8 @@ Rootd is an mu-plugin for WordPress that seeks to provide a better development t
 The framework is currently in development (pre-alpha).
 
 Follow updates here and on my blog:
-[http://blog.rickbuczynski.com/tag/rootd-wordpress/]
+
+http://blog.rickbuczynski.com/tag/rootd-wordpress/
 
 
 License
