@@ -11,10 +11,11 @@
 class Rootd_Loader
 {
 
+	private static $_ignoreWarnings = false;
 	/* @var $_instance Rootd_Autoloader */
-	private static $_instance 	= null;
-	private static $_isReady 	= false;
-	private static $_scopes 	= array();
+	private static $_instance 		= null;
+	private static $_isReady 		= false;
+	private static $_scopes 		= array();
 
 	/**
 	 * Add a module to the autoload scope.
@@ -35,19 +36,19 @@ class Rootd_Loader
 	 */
 	public static function autoload($class = '')
 	{
-		if(!self::validateClass($class))
-		{
+		if (!self::validateClass($class)) {
 			return false;
 		}
 
 		$file = str_replace(' ', DIRECTORY_SEPARATOR, ucwords(str_replace('_', ' ', $class))) . '.php';
 
-		try
-		{
-			include $file;
-		}
-		catch(Exception $error) 
-		{
+		try {
+			if (self::$_ignoreWarnings) {
+				@include $file;
+			} else {
+				include $file;
+			}
+		} catch(Exception $error) {
 			return false;
 		}
 
@@ -61,8 +62,7 @@ class Rootd_Loader
 	 */
 	public static function initialize()
 	{
-		if(!self::$_isReady)
-		{
+		if (!self::$_isReady) {
 			spl_autoload_register(array(self::instance(), 'autoload'));
 			self::$_isReady = true;
 		}
@@ -75,8 +75,7 @@ class Rootd_Loader
 	 */
 	public function instance()
 	{
-		if(!self::$_instance)
-		{
+		if (!self::$_instance) {
 			self::$_instance = new Rootd_Loader();
 		}
 
@@ -95,6 +94,11 @@ class Rootd_Loader
 		$vendor = array_shift($path);
 
 		return in_array($vendor, self::$_scopes);
+	}
+
+	public static function setIgnoreWarnings($flag)
+	{
+		self::$_ignoreWarnings = $flag;
 	}
 
 }

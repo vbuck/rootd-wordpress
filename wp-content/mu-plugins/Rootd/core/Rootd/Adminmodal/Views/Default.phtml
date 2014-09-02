@@ -1,0 +1,31 @@
+<?php /* @var $this Rootd_Adminmodal_Abstract */ ?>
+<div>
+    <script type="text/html" id="<?php echo $this->getInstanceId(); ?>">
+        <div id="rootd_adminmodal_glass">
+            <div id="rootd_adminmodal_window" class="rootd-adminmodal">
+                <?php if ($this->getShowCloseControl()) : ?>
+                <a id="rootd_adminmodal_close" class="rootd-adminmodal-close" href="javascript:;" title="<?php echo $this->__('Close'); ?>">
+                    <span class="dashicons dashicons-no"></span>
+                </a>
+                <?php endif; ?>
+                <div class="rootd-adminmodal-inner">
+                    <section class="rootd-adminmodal-main" role="main">
+                        <header id="rootd_adminmodal_header">
+                            <h1><?php echo $this->getTitle(); ?></h1>
+                        </header>
+                        <article id="rootd_adminmodal_content">
+                            <?php echo $this->getContent(); ?>
+                        </article>
+                        <footer id="rootd_adminmodal_footer">
+                            <div class="inner textright">
+                                <?php foreach ($this->getControls() as $control) : ?>
+                                <?php echo $control->render(); ?>
+                                <?php endforeach; ?>
+                            </div>
+                        </footer>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </script>
+</div>

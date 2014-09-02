@@ -3,9 +3,11 @@
 /**
  * Meta box abstract class.
  *
- * @package  	Rootd
- * @author   	Rick Buczynski <me@rickbuczynski.com>
- * @copyright   2014 Rick Buczynski. All Rights Reserved.
+ * PHP Version 5
+ *
+ * @package   Rootd
+ * @author    Rick Buczynski <me@rickbuczynski.com>
+ * @copyright 2014 Rick Buczynski. All Rights Reserved.
  */
 
 abstract class Rootd_Meta_Abstract
@@ -46,7 +48,7 @@ abstract class Rootd_Meta_Abstract
 	}
 
 	/**
-	 * Initializer.
+	 * Internal constructor.
 	 * 
 	 * @return Rootd_Meta_Abstract
 	 */
@@ -58,7 +60,8 @@ abstract class Rootd_Meta_Abstract
 	/**
 	 * Post-render actions.
 	 * 
-	 * @param  string $output The rendered content.
+	 * @param string $output The rendered content.
+	 * 
 	 * @return string
 	 */
 	protected function _afterRender($output = '')
@@ -69,7 +72,8 @@ abstract class Rootd_Meta_Abstract
 	/**
 	 * Post-save actions.
 	 * 
-	 * @param  WP_Post $post
+	 * @param WP_Post $post The post object.
+	 * 
 	 * @return Rootd_Meta_Abstract
 	 */
 	protected function _afterSave(Rootd_Object $post)
@@ -90,25 +94,24 @@ abstract class Rootd_Meta_Abstract
 	/**
 	 * Pre-save actions.
 	 * 
-	 * @param  WP_Post $post
+	 * @param WP_Post $post
+	 * 
 	 * @return Rootd_Meta_Abstract
 	 */
 	protected function _beforeSave(Rootd_Object $post)
 	{
 		// Verify nonce field
-		if(!$this->_verifyNonce())
-		{
+		if (!$this->_verifyNonce()) {
 			return false;
 		}
 
 		// User must have edit permissions
-		if(
+		if (
 			!current_user_can(
 				get_post_type_object($post->getPostType())->cap->edit_post, 
 				$post->getId()
 			)
-		)
-		{
+		) {
 			return false;
 		}
 
@@ -132,9 +135,7 @@ abstract class Rootd_Meta_Abstract
 			$view = ob_get_contents();
 
 			ob_end_clean();
-		}
-		catch(Exception $error)
-		{
+		} catch(Exception $error) {
 			return $this->__('Failed to fetch view in ' . get_class($this));
 		}
 
@@ -161,7 +162,8 @@ abstract class Rootd_Meta_Abstract
 	 *
 	 * Auto-loads all meta data.
 	 * 
-	 * @param  WP_Post $object
+	 * @param WP_Post $object The post object.
+	 * 
 	 * @return Rootd_Meta_Abstract
 	 */
 	protected function _preparePost(WP_Post $object)
@@ -169,8 +171,7 @@ abstract class Rootd_Meta_Abstract
 		$data 			= (array) $object;
 		$metaData 		= array();
 
-		foreach(get_post_meta($data['ID']) as $key => $values)
-		{
+		foreach (get_post_meta($data['ID']) as $key => $values) {
 			$metaData[$key] = implode(',', $values);
 		}
 
@@ -201,17 +202,40 @@ abstract class Rootd_Meta_Abstract
 		return $this;
 	}
 
-// @todo implement
+	/**
+	 * Translator.
+	 * 
+	 * @param string $text   Input.
+	 * @param string $domain Text-domain.
+	 * 
+	 * @return string
+	 */
 	public function __($text = '', $domain = '')
 	{
 		return $text;
 	}
-// @todo implement
+
+	/**
+	 * Translator with output.
+	 * 
+	 * @param string $text   Input.
+	 * @param string $domain Text-domain.
+	 * 
+	 * @return void
+	 */
 	public function _e($text = '', $domain = '')
 	{
 		echo $text;
 	}
-// @todo implement
+
+	/**
+	 * Translator for singular/plural.
+	 * 
+	 * @param string $text   Input.
+	 * @param string $domain Text-domain.
+	 * 
+	 * @return string
+	 */
 	public function _n($singular = '', $plural ='', $number = null, $domain ='')
 	{
 		return $singular;
@@ -224,11 +248,10 @@ abstract class Rootd_Meta_Abstract
 	 */
 	public function _verifyNonce()
 	{
-		if(
+		if (
 			!isset($_POST[$this->getNonceFieldName()]) ||
 			wp_verify_nonce($_POST[$this->getNonceFieldName()])
-		)
-		{
+		) {
 			return false;
 		}
 
@@ -242,8 +265,7 @@ abstract class Rootd_Meta_Abstract
 	 */
 	public function addMeta()
 	{
-		foreach($this->_areas as $type)
-		{
+		foreach ($this->_areas as $type) {
 			add_meta_box(
 				get_class($this),
 				$this->getTitle(),
@@ -260,8 +282,9 @@ abstract class Rootd_Meta_Abstract
 	/**
 	 * Escape an HTML attribute.
 	 * 
-	 * @param  	string $value
-	 * @return 	string
+	 * @param string $value The data to escape.
+	 * 
+	 * @return string
 	 */
 	public function escapeAttribute($value = '')
 	{
@@ -292,15 +315,15 @@ abstract class Rootd_Meta_Abstract
 	 * Generate a HTML attributes string
 	 * from an associative array.
 	 * 
-	 * @param  	array  $attributes
-	 * @return 	string
+	 * @param array $attributes The HTML attributes.
+	 * 
+	 * @return string
 	 */
 	public function getHtmlAttributes($attributes = array())
 	{
 		$groups = array();
 
-		foreach($attributes as $key => $value)
-		{
+		foreach ($attributes as $key => $value) {
 			$groups[] = $key . '="' . $this->escapeAttribute($value) . '"';
 		}
 
@@ -408,9 +431,10 @@ abstract class Rootd_Meta_Abstract
 	/**
 	 * Frontend meta box renderer.
 	 * 
-	 * @param  	WP_Post $object
-	 * @param  	array $instance
-	 * @return 	void
+	 * @param WP_Post $object   The post object.
+	 * @param array   $instance The instance configuration.
+	 * 
+	 * @return void
 	 */
 	public function render(WP_Post $object, array $instance)
 	{
@@ -426,16 +450,16 @@ abstract class Rootd_Meta_Abstract
 	/**
 	 * Frontend meta box save handler.
 	 * 
-	 * @param  	integer $id
-	 * @param  	WP_Post $post
-	 * @return 	Rootd_Meta_Abstract
+	 * @param integer $id   The post ID.
+	 * @param WP_Post $post The post object.
+	 * 
+	 * @returnRootd_Meta_Abstract
 	 */
 	public function save($id, WP_Post $post)
 	{
 		$this->_preparePost($post);
 
-		if(!$this->_beforeSave($this->_post))
-		{
+		if (!$this->_beforeSave($this->_post)) {
 			return false;
 		}
 
@@ -448,13 +472,13 @@ abstract class Rootd_Meta_Abstract
 	/**
 	 * Set the meta-box location(s).
 	 *
-	 * @param 	mixed $area
-	 * @return  Rootd_Meta_Abstract
+	 * @param mixed $area The area(s) to which the meta box will be registered.
+	 * 
+	 * @return Rootd_Meta_Abstract
 	 */
 	public function setArea($area = array())
 	{
-		if(!is_array($area))
-		{
+		if (!is_array($area)) {
 			$area = array($area);
 		}
 
@@ -466,8 +490,9 @@ abstract class Rootd_Meta_Abstract
 	/**
 	 * Set the meta box context.
 	 * 
-	 * @param 	string $context
-	 * @return  Rootd_Meta_Abstract
+	 * @param string $context The meta box context.
+	 * 
+	 * @return Rootd_Meta_Abstract
 	 */
 	public function setContext($context = self::CONTEXT_NORMAL)
 	{
@@ -479,8 +504,9 @@ abstract class Rootd_Meta_Abstract
 	/**
 	 * Set the meta box priority.
 	 * 
-	 * @param 	string $priority
-	 * @return  Rootd_Meta_Abstract
+	 * @param string $priority The meta box priority.
+	 * 
+	 * @return Rootd_Meta_Abstract
 	 */
 	public function setPriority($priority = self::PRIORITY_DEFAULT)
 	{
@@ -492,8 +518,9 @@ abstract class Rootd_Meta_Abstract
 	/**
 	 * Set the meta box template.
 	 * 
-	 * @param 	string $template
-	 * @return  Rootd_Meta_Abstract
+	 * @param string $template The meta box template path, relative to the module.
+	 * 
+	 * @return Rootd_Meta_Abstract
 	 */
 	public function setTemplate($template = '')
 	{
@@ -505,8 +532,9 @@ abstract class Rootd_Meta_Abstract
 	/**
 	 * Set the meta box title.
 	 * 
-	 * @param 	string $title
-	 * @return  Rootd_Meta_Abstract
+	 * @param string $title The meta box title.
+	 * 
+	 * @return Rootd_Meta_Abstract
 	 */
 	public function setTitle($title = '')
 	{
@@ -518,7 +546,7 @@ abstract class Rootd_Meta_Abstract
 	/**
 	 * Register the meta box setup processes.
 	 * 
-	 * @return  Rootd_Meta_Abstract
+	 * @return Rootd_Meta_Abstract
 	 */
 	public function setupMeta()
 	{

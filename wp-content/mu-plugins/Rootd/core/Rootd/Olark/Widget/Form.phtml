@@ -1,0 +1,62 @@
+<?php /* @var $this Rootd_Olark_Widget */ ?>
+<?php $data = $this->getWidgetData(); ?>
+<?php echo Rootd::getCopyright('small'); ?>
+<p>
+    <label for="<?php echo $this->get_field_id('olark_site_id'); ?>">
+        <span><?php echo $this->__('Site ID:'); ?></span>
+        <input type="text" name="<?php echo $this->get_field_name('olark_site_id'); ?>" id="<?php echo $this->get_field_id('olark_site_id'); ?>" class="widefat" value="<?php echo $data->getOlarkSiteId(); ?>" />
+    </label>
+</p>
+<p>
+    <label for="<?php echo $this->get_field_id('olark_widget_mode'); ?>">
+        <span><?php echo $this->__('Widget Mode:'); ?></span>
+        <select name="<?php echo $this->get_field_name('olark_widget_mode'); ?>" id="<?php echo $this->get_field_id('olark_widget_mode'); ?>" class="widefat" onchange="olarkSetWidgetMode(this.options[this.selectedIndex].value, '<?php echo $this->get_field_id('olark_custom_html'); ?>_container');">
+            <?php foreach ($this->getWidgetModes() as $option) : ?>
+            <?php $selected = $data->getOlarkWidgetMode() == $option['value'] ? ' selected="selected"' : ''; ?>
+            <option value="<?php echo $option['value']; ?>"<?php echo $selected; ?>><?php echo $option['label']; ?></option>
+            <?php endforeach; ?>
+        </select>
+        <p class="description"><?php echo $this->__('In default mode, the chat window will appear according to your <a href="https://www.olark.com/settings" target="blank">Olark account settings</a>.'); ?></p>
+    </label>
+</p>
+<p id="<?php echo $this->get_field_id('olark_custom_html'); ?>_container"<?php echo $data->getOlarkCustomHtml() == 'custom' ? '' : ' style="display:none;"'; ?>>
+    <label for="<?php echo $this->get_field_id('olark_custom_html'); ?>">
+        <span><?php echo $this->__('Custom HTML:'); ?></span>
+        <textarea name="<?php echo $this->get_field_name('olark_custom_html'); ?>" id="<?php echo $this->get_field_id('olark_custom_html'); ?>" class="widefat" rows="5"><?php echo htmlentities($data->getOlarkCustomHtml()); ?></textarea>
+    </label>
+</p>
+<p>
+    <label for="<?php echo $this->get_field_id('olark_service_plan'); ?>">
+        <span><?php echo $this->__('Service Plan:'); ?></span>
+        <select name="<?php echo $this->get_field_name('olark_service_plan'); ?>" id="<?php echo $this->get_field_id('olark_service_plan'); ?>" class="widefat">
+            <?php foreach ($this->getServicePlans() as $option) : ?>
+            <?php $selected = $data->getOlarkServicePlan() == $option['value'] ? ' selected="selected"' : ''; ?>
+            <option value="<?php echo $option['value']; ?>"<?php echo $selected; ?>><?php echo $option['label']; ?></option>
+            <?php endforeach; ?>
+        </select>
+    </label>
+</p>
+<p>
+    <label for="<?php echo $this->get_field_id('olark_custom_configuration'); ?>" data-olark-plan="*">
+        <span><?php echo $this->__('Custom Configuration:'); ?></span>
+        <textarea name="<?php echo $this->get_field_name('olark_custom_configuration'); ?>" id="<?php echo $this->get_field_id('olark_custom_configuration'); ?>" class="widefat" rows="5"><?php echo htmlentities($data->getOlarkCustomConfiguration()); ?></textarea>
+    </label>
+</p>
+<script type="text/javascript">
+    (function($) {
+
+        $(document).ready(function() {
+            if (typeof window.olarkSetWidgetMode != 'function') {
+                window.olarkSetWidgetMode = function(mode, targetId) {
+                    if (mode == 'custom') {
+                        $('#' + targetId).show();
+                    } else {
+                        $('#' + targetId).hide();
+                        $('#' + targetId.replace(/_container/, '')).val('');
+                    }
+                }
+            }
+        });
+
+    }(jQuery));
+</script>

@@ -13,6 +13,60 @@
 class Rootd_Config_Element extends SimpleXMLElement
 {
 
+    /**
+     * Convert to array with attributes.
+     *
+     * @return array|string
+     */
+    public function asArray()
+    {
+        return $this->_asArray();
+    }
+
+    /**
+     * Convert to array without attributes.
+     * 
+     * @return array|string
+     */
+    public function asCanonicalArray()
+    {
+        return $this->_asArray(true);
+    }
+
+    /**
+     * Returns the node and children as an array.
+     *
+     * @param bool $isCanonical Whether to ignore attributes.
+     * 
+     * @return array|string
+     */
+    protected function _asArray($isCanonical = false)
+    {
+        $result = array();
+
+        if (!$isCanonical) {
+            // add attributes
+            foreach ($this->attributes() as $attributeName => $attribute) {
+                if ($attribute) {
+                    $result['@'][$attributeName] = (string)$attribute;
+                }
+            }
+        }
+
+        if ($this->hasChildren()) {
+            foreach ($this->children() as $childName => $child) {
+                $result[$childName] = $child->_asArray($isCanonical);
+            }
+        } else {
+            if (empty($result)) {
+                $result = (string) $this;
+            } else {
+                $result[0] = (string) $this;
+            }
+        }
+        return $result;
+    }
+
 	/**
 	 * Descend a node by path.
 	 * 
@@ -33,8 +87,8 @@ class Rootd_Config_Element extends SimpleXMLElement
             }
             else 
             {
-                $regex = "#([^@/\\\"]+(?:@[^=/]+=(?:\\\"[^\\\"]*\\\"|[^/]*))?)/?#";
-                $pathParts = 
+                $regex      = "#([^@/\\\"]+(?:@[^=/]+=(?:\\\"[^\\\"]*\\\"|[^/]*))?)/?#";
+                $pathParts  = 
                 	$pathMatches = array();
 
                 if(preg_match_all($regex, $path, $pathMatches)) 

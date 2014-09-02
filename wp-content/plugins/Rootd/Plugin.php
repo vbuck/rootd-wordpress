@@ -15,7 +15,8 @@ session_start();
 
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Watchdog.php';
 
-if(!class_exists('Rootd_Watchdog', false)) {
+if(!class_exists('Rootd_Watchdog', false)) 
+{
 	throw new Exception('Failed to initialize Rootd Framework because the plugin observer was not found.');
 }
 

@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!--
+
+/**
+ * Vendor Library: PHP Crontab Manager
+ *
+ * @see       https://github.com/MediovskiTechnology/php-crontab-manager
+ *
+ * @package   Mediovski
+ * @author    Rick Buczynski <me@rickbuczynski.com>
+ * @author    Krzysztof Suszyński <k.suszynski@mediovski.pl>
+ * @author    Ryan Faerman <ryan.faerman@gmail.com>
+ * @copyright 2014 Rick Buczynski. All Rights Reserved.
+ *            2012 Krzysztof Suszyński
+ *            2009 Ryan Faerman
+ */
+
+-->
+<config>
+    <modules>
+        <mediovski>
+            <class>Mediovski</class>
+            <crontab>
+                <path><![CDATA[/usr/bin/crontab]]></path>
+            </crontab>
+        </mediovski>
+    </modules>
+</config>
