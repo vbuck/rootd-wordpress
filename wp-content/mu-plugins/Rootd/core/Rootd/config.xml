@@ -22,12 +22,6 @@
 		<rootd>
 			<!-- The base class (module) prefix -->
 			<class>Rootd</class>
-			<support>
-				<name><![CDATA[Rootd Framework for WordPress]]></name>
-				<author><![CDATA[Rick Buczynski]]></author>
-				<email><![CDATA[me@rickbuczynski.com]]></email>
-				<url><![CDATA[http://www.rickbuczynski.com/]]></url>
-			</support>
 			<features>
 				<postnote>
 					<!-- When set to true, the feature will be enabled automatically -->

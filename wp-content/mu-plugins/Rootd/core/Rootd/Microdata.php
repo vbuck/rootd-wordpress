@@ -5,8 +5,6 @@
  *
  * PHP Version 5
  *
- * @todo      Needs some work, fer serious.
- *
  * @package   Rootd
  * @author    Rick Buczynski <me@rickbuczynski.com>
  * @copyright 2014 Rick Buczynski. All Rights Reserved.

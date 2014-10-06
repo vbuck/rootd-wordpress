@@ -10,6 +10,16 @@
  * @copyright 2014 Rick Buczynski. All Rights Reserved.
  */
 
+defined('APPLICATION_ENV') || 
+define(
+    'APPLICATION_ENV', 
+    (
+        getenv('APPLICATION_ENV') ? 
+            getenv('APPLICATION_ENV') : 
+            'production'
+    )
+);
+
 $basePath   = dirname(__FILE__);
 $paths      = array();
 $paths[]    = WP_PLUGIN_DIR;                                                                // Plugins
@@ -46,12 +56,10 @@ final class Rootd
     protected static function _loadConfig()
     {
         $config = self::$_config;
-        if($config instanceof Rootd_Config)
-        {
-            foreach(array('core', 'plugin') as $base)
-            {
-                foreach(self::getModuleList($base) as $module)
-                {
+
+        if ($config instanceof Rootd_Config) {
+            foreach (array('core', 'plugin') as $base) {
+                foreach (self::getModuleList($base) as $module) {
                     $config->loadConfiguration(self::getBasePath($base, "{$module}/config.xml"));
 
                     // Auto-load scopes for core modules
@@ -61,6 +69,9 @@ final class Rootd
                 }
             }
         }
+
+        // Load user-defined configuration
+        $config->loadConfiguration(self::getBasePath('base', 'local.xml'));
     }
 
     /**
@@ -166,12 +177,6 @@ final class Rootd
         }
 
         return self::$_config;
-    }
-
-    public static function getCopyright($format = '')
-    {
-        $renderer   = self::getSingleton('Rootd_Microdata');
-        $input      = self::getConfig()->getNode('modules/rootd/support')->asArray();
     }
 
     public static function getIsModuleEnabled($module)

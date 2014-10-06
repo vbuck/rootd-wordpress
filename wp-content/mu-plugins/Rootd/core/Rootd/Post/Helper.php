@@ -23,12 +23,21 @@ class Rootd_Post_Helper extends Rootd_Object
      */
     public function getPost($id = null, $includeMeta = true)
     {
-        $data           = get_post($id, 'ARRAY_A', 'raw');
-        $metaData       = array();
+        $data = get_post($id, 'ARRAY_A', 'raw');
 
-        if ($includeMeta) {
-            foreach (get_post_meta($data['ID']) as $key => $values) {
-                $metaData[$key] = implode(',', $values);
+        if (!is_array($data)) {
+            $data = array();
+        }
+
+        $metaData = array();
+
+        if ($includeMeta && isset($data['ID'])) {
+            $meta = get_post_meta($data['ID']);
+
+            if (is_array($meta)) {
+                foreach ($meta as $key => $values) {
+                    $metaData[$key] = implode(',', $values);
+                }
             }
         }
 

@@ -5,8 +5,6 @@
  *
  * PHP Version 5
  *
- * @todo      Needs some work, fer serious.
- *
  * @package   Rootd
  * @author    Rick Buczynski <me@rickbuczynski.com>
  * @copyright 2014 Rick Buczynski. All Rights Reserved.
@@ -15,10 +13,8 @@
 class Rootd_Microdata_Schema_Abstract extends Rootd_Object
 {
 
-    protected $_containerTag    = 'div';
-    protected $_defaultRenderer = 'Datatype/Text';
     protected $_itemType        = '';
-    protected $_propertyTag     = 'span';
+    protected $_defaultRenderer = 'Datatype/Text';
 
     /**
      * Initialize empty template.
@@ -42,7 +38,7 @@ class Rootd_Microdata_Schema_Abstract extends Rootd_Object
      */
     protected function _afterMergeProperty($property, $content = '')
     {
-        return '</' . $this->_propertyTag . '>';
+        return '</span>';
     }
 
     /**
@@ -54,7 +50,7 @@ class Rootd_Microdata_Schema_Abstract extends Rootd_Object
      */
     protected function _afterRender($output = '')
     {
-        return $output . '</' . $this->_containerTag . '>';
+        return $output . '</span>';
     }
 
     /**
@@ -67,7 +63,7 @@ class Rootd_Microdata_Schema_Abstract extends Rootd_Object
      */
     protected function _beforeMergeProperty($property, $content = '')
     {
-        return '<' . $this->_propertyTag . ' itemprop="' . $property . '">';
+        return '<span itemprop="' . $property . '">';
     }
 
     /**
@@ -77,7 +73,7 @@ class Rootd_Microdata_Schema_Abstract extends Rootd_Object
      */
     protected function _beforeRender()
     {
-        return '<' . $this->_containerTag . ' itemscope itemtype="' . $this->getSchema() . '">';
+        return '<span itemscope itemtype="' . $this->getSchema() . '">';
     }
 
     /**
