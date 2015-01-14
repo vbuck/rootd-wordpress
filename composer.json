@@ -1,5 +1,5 @@
 {
-    "name"          : "vbuck/rootd-wordpress",
+    "name"          : "Rootd",
     "license"       : "MIT",
     "type"          : "wordpress-plugin",
     "description"   : "Framework for WordPress",
