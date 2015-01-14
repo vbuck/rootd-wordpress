@@ -1,7 +1,7 @@
 {
     "name"          : "vbuck/rootd-wordpress",
     "license"       : "MIT",
-    "type"          : "wordpress-core",
+    "type"          : "wordpress-plugin",
     "description"   : "Framework for WordPress",
     "authors"       : [
         {
@@ -14,7 +14,7 @@
     },
     "extra"         : {
         "installer-paths" : {
-            "wp-content/"  : ["type:wordpress-core"]
+            "wp-content/"  : ["type:wordpress-plugin"]
         }
     }
 }
