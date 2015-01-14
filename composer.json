@@ -9,6 +9,14 @@
             "email" : "me@rickbuczynski.com"
         }
     ],
+    "repositories": 
+    [
+        {
+            "type": "vcs",
+            "url": "git@github.com:vbuck/rootd-wordpress-core.git"
+        }
+
+    ],
     "require"       : {
         "composer/installers" : "~1.0",
         "vbuck/rootd-wordpress-core" : "dev-master"
