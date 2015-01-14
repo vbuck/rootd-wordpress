@@ -1,9 +1,7 @@
 Rootd Framework for WordPress
 =============================
 
-Rootd is an mu-plugin for WordPress that seeks to provide a better development toolkit. Built on PHP5 OOP principles, and striving to adhere to PSR standards, this framework will allow developers to step into an easier environment for creating plugins and other extensions.
-
-The framework is currently in development (pre-alpha).
+Rootd is a framework for WordPress that seeks to provide a better development toolkit.
 
 Follow updates here and on my blog:
 
@@ -13,21 +11,27 @@ http://blog.rickbuczynski.com/tag/rootd-wordpress/
 Installation
 ============
 
-Add `vbuck/rootd-wordpress` to your `composer.json` as a requirement:
+Setup the package in your project `composer.json`
 
-```
-"require": {
-    "vbuck/rootd-wordpress": "dev-master"
+```json
+{
+    "repositories": 
+    [
+        {
+            "type": "vcs",
+            "url": "git@github.com:vbuck/rootd-wordpress.git"
+        }
+
+    ],
+    "require": {
+        "vbuck/rootd-wordpress": "dev-master"
+    }
 }
 ```
 
-This package declares `composer/installers` as a dependency. Because this project is comprised of both plugin *and* mu-plugin contents, you must override the install path in your project `composer.json`:
+Then run `composer update` to inject the new dependency.
 
-```
-"installer-paths": {
-    "wp-content/": ["vbuck/rootd-wordpress"]
-}
-```
+Please note that this package will also install the required core framework `vbuck/root-wordpress-core`.
 
 
 License
