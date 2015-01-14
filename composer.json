@@ -3,13 +3,13 @@
     "license"       : "MIT",
     "type"          : "wordpress-plugin",
     "description"   : "Framework for WordPress",
-    "authors": [
+    "authors"       : [
         {
             "name"  : "Rick Buczynski",
             "email" : "me@rickbuczynski.com"
         }
     ],
-    "require": {
+    "require"       : {
         "composer/installers": "~1.0"
-    },
+    }
 }
