@@ -8,8 +8,5 @@
             "name"  : "Rick Buczynski",
             "email" : "me@rickbuczynski.com"
         }
-    ],
-    "require"       : {
-        "mnsami/composer-custom-directory-installer": "1.0.*"
-    }
+    ]
 }
