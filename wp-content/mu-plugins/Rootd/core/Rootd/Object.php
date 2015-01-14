@@ -105,11 +105,27 @@ class Rootd_Object
         	return $this->_data;
         }
         
-        if (isset($this->_data[$key])){
+        if (isset($this->_data[$key])) {
         	return $this->_data[$key];
         }
         
         return null;
+    }
+
+    public function hasData($key)
+    {
+        return isset($this->_data[$key]);
+    }
+
+    public function getDataUsingMethod($key)
+    {
+        $method = 'get' . implode('', ( explode(' ', ( ucwords(implode(' ', ( explode('_', $key) ))) )) ));
+
+        if (method_exists($this, $method)) {
+            return call_user_func(array($this, $method));
+        }
+
+        return $this->getData($key);
     }
     
     public function setData($key, $value = null) 

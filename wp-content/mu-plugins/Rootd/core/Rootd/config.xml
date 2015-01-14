@@ -20,6 +20,7 @@
 <config>
 	<modules>
 		<rootd>
+			<version>0.2.0</version>
 			<!-- The base class (module) prefix -->
 			<class>Rootd</class>
 			<features>

@@ -20,6 +20,7 @@ if(get_option('rootd_framework_enabled'))
 	require_once $rootdLibDir . 'Loader.php';
 	require_once $rootdLibDir . 'Base.php';
 
+    Rootd::initialize();
 	Rootd_Loader::initialize();
 
 	add_action('plugins_loaded', array('Rootd', 'run'));

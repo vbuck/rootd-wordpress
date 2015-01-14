@@ -34,9 +34,7 @@ class Rootd_Template_Filter
             if (is_scalar($parameter) && $inputDirective == $directive) {
                 $input = str_replace($directive, $parameter, $input);
             } else if ($parameter instanceof Rootd_Object && $key == $parts[0]) { // Filter for Rootd_Object data
-                if ($parameter->getData($parts[1])) {
-                    $input = str_replace($directive, $parameter->getData($parts[1]), $input);
-                }
+                $input = str_replace($directive, $parameter->getDataUsingMethod($parts[1]), $input);
             } else if(is_object($parameter) && $key == $parts[0]) { // Filter for other object methods
                 if (method_exists(array($parameter, $parts[1]))) {
                     $input = str_replace($directive, call_user_func(array($parameter, $parts[1])), $input);

@@ -43,6 +43,8 @@ final class Rootd
     private static $_config;
     private static $_coreLog        = array();
     private static $_classCache     = array();
+    /* @var $_installer Rootd_Module_Installer */
+    private static $_installer      = array();
     private static $_modules        = array();
     private static $_registry       = array();
     /* @var $_request Rootd_Request */
@@ -72,6 +74,9 @@ final class Rootd
 
         // Load user-defined configuration
         $config->loadConfiguration(self::getBasePath('base', 'local.xml'));
+
+        // Load data from DB
+        $config->loadDbConfiguration();
     }
 
     /**
@@ -154,6 +159,7 @@ final class Rootd
                 break;
             case 'lib':
                 $basePath = self::$_basePath . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR;
+                break;
             case 'plugin':
             default:
                 $basePath = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR;
@@ -177,6 +183,20 @@ final class Rootd
         }
 
         return self::$_config;
+    }
+
+    /**
+     * Get the module installer instance.
+     * 
+     * @return Rootd_Module_Installer
+     */
+    public static function getInstaller()
+    {
+        if (!self::$_installer) {
+            self::$_installer = new Rootd_Module_Installer();
+        }
+
+        return self::$_installer;
     }
 
     public static function getIsModuleEnabled($module)
@@ -349,6 +369,11 @@ final class Rootd
         return null;
     }
 
+    public static function initialize()
+    {
+        self::setBasePath(WP_CONTENT_DIR . DIRECTORY_SEPARATOR . 'mu-plugins' . DIRECTORY_SEPARATOR . 'Rootd');
+    }
+
     /**
      * Load all module configurations.
      * 
@@ -380,6 +405,8 @@ final class Rootd
                         call_user_func(array($class, 'register'));
                     }
                 }
+
+                self::getInstaller()->update($moduleKey);
             }
         } catch(Exception $error) { }
     }
@@ -486,9 +513,7 @@ final class Rootd
      */
     public static function run()
     {
-        self::setBasePath(WP_CONTENT_DIR . DIRECTORY_SEPARATOR . 'mu-plugins' . DIRECTORY_SEPARATOR . 'Rootd');
         self::getConfig();
-
         self::loadModules();
     }
 

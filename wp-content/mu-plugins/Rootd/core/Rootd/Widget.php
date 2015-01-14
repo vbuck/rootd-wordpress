@@ -29,6 +29,8 @@ class Rootd_Widget extends WP_Widget
 	 */
 	public function __construct()
 	{
+		$this->_widgetData = new Rootd_Object();
+		
 		$this->_construct();
 	}
 

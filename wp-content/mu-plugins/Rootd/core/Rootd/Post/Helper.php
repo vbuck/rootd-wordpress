@@ -13,6 +13,9 @@
 class Rootd_Post_Helper extends Rootd_Object
 {
 
+    /* @var $_post Rootd_Object */
+    protected $_post;
+
     /**
      * Get a prepared post object.
      * 
@@ -21,9 +24,13 @@ class Rootd_Post_Helper extends Rootd_Object
      * 
      * @return Rootd_Object
      */
-    public function getPost($id = null, $includeMeta = true)
+    public function getPost($id = null, $includeMeta = true, $forceReload = false)
     {
-        $data = get_post($id, 'ARRAY_A', 'raw');
+        if ($this->_post && !$forceReload) {
+            return $this->_post;
+        }
+
+        $data = get_post(get_queried_object_id(), 'ARRAY_A', 'display');
 
         if (!is_array($data)) {
             $data = array();
@@ -41,9 +48,9 @@ class Rootd_Post_Helper extends Rootd_Object
             }
         }
 
-        $data = array_merge($data, $metaData);
+        $this->_post = new Rootd_Object(array_merge($data, $metaData));
 
-        return new Rootd_Object($data);
+        return $this->_post;
     }
 
 }
