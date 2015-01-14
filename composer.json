@@ -10,12 +10,6 @@
         }
     ],
     "require"       : {
-        "composer/installers": "~1.0",
-        "mnsami/composer-custom-directory-installer": "1.0.*"
-    },
-    "extra"         : {
-        "installer-paths" : {
-            "./wp/"  : ["vbuck/rootd-wordpress"]
-        }
+        "composer/installers": "~1.0"
     }
 }
