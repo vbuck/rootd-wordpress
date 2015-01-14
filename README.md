@@ -10,6 +10,26 @@ Follow updates here and on my blog:
 http://blog.rickbuczynski.com/tag/rootd-wordpress/
 
 
+Installation
+============
+
+Add `vbuck/rootd-wordpress` to your `composer.json` as a requirement:
+
+```
+"require": {
+    "vbuck/rootd-wordpress": "dev-master"
+}
+```
+
+This package declares `composer/installers` as a dependency. Because this project is comprised of both plugin *and* mu-plugin contents, you must override the install path in your project `composer.json`:
+
+```
+"installer-paths": {
+    "wp-content/": ["vbuck/rootd-wordpress"]
+}
+```
+
+
 License
 =======
 
