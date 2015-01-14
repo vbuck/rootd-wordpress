@@ -35,8 +35,7 @@ class Rootd_View_Template
             $content .= ob_get_contents();
 
             ob_end_clean();
-        }
-        catch(Exception $error) { }
+        } catch(Exception $error) { }
 
         return $content;
     }
@@ -68,19 +67,19 @@ class Rootd_View_Template
      */
     public function getTemplatePath()
     {
-
-        if($this->_isAbsolute) {
+        if ($this->_isAbsolute) {
             $path = $this->_template;
-        }
-        else {
-            $path = Rootd::getBasePath($this->_area, $this->_template);
+        } else {
+            foreach (array($this->_area, 'theme', 'core') as $area) {
+                $path = Rootd::getBasePath($this->_area, $this->_template); 
+
+                if (file_exists($path)) {
+                    break;
+                }
+            }
         }
 
-        if (file_exists($path)) {
-            return $path;
-        }
-
-        return false;
+        return $path;
     }
 
     /**

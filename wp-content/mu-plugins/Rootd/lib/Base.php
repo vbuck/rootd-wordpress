@@ -149,8 +149,7 @@ final class Rootd
         $basePath   = '';
         $subPath    = self::fixPath($subPath);
 
-        switch($type)
-        {
+        switch($type) {
             case 'base':
                 $basePath = self::$_basePath . DIRECTORY_SEPARATOR;
                 break;
@@ -159,6 +158,9 @@ final class Rootd
                 break;
             case 'lib':
                 $basePath = self::$_basePath . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR;
+                break;
+            case 'theme':
+                $basePath = get_template_directory() . DIRECTORY_SEPARATOR;
                 break;
             case 'plugin':
             default:
@@ -302,8 +304,7 @@ final class Rootd
      */
     public static function getRequest()
     {
-        if(!self::$_request)
-        {
+        if (!self::$_request) {
             self::$_request = new Rootd_Request();
         }
 
@@ -388,8 +389,7 @@ final class Rootd
         }
 
         try {
-            foreach($config->getNode('modules')->children() as $moduleKey => $moduleConfig)
-            {
+            foreach ($config->getNode('modules')->children() as $moduleKey => $moduleConfig) {
                 $moduleName = (string) $moduleConfig->class;
 
                 if (!self::getIsModuleEnabled($moduleName)) {
@@ -465,8 +465,7 @@ final class Rootd
      */
     public static function register($key, $value)
     {
-        if(isset(self::$_registry[$key]))
-        {
+        if (isset(self::$_registry[$key])) {
             throw new Exception("Registry entry already exists for {$key}.");
         }
 
@@ -498,8 +497,7 @@ final class Rootd
      */
     public static function registry($key)
     {
-        if(isset(self::$_registry[$key]))
-        {
+        if (isset(self::$_registry[$key])) {
             return self::$_registry[$key];
         }
 
