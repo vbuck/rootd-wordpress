@@ -1,0 +1,7 @@
+{
+    "name"          : "vbuck/rootd-wordpress",
+    "license"       : "MIT",
+    "type"          : "plugin",
+    "description"   : "Framework for WordPress",
+    "homepage"      : "https://github.com/vbuck/rootd-wordpress/"
+}
