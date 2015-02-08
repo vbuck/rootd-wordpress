@@ -53,6 +53,25 @@ final class Rootd_Watchdog
     }
 
     /**
+     * Retrieve the latest core version details from service.
+     * 
+     * @return Rootd_Object
+     */
+    public static function getCoreVersionInfo()
+    {
+        $data = @file_get_contents(Rootd_Installer::CORE_VERSION_URL);
+
+        if (!$data) {
+            // If failed to retrieve, at least match the current version
+            $data = array('version' => Rootd::getVersion());
+        } else {
+            $data = json_decode($data, true);
+        }
+
+        return new Rootd_Object($data);
+    }
+
+    /**
      * Get the expected path for the framework.
      * 
      * @return string
@@ -109,6 +128,29 @@ final class Rootd_Watchdog
     }
 
     /**
+     * Check for core update candidate.
+     * 
+     * @return boolean
+     */
+    public static function needsCoreUpdate()
+    {
+        // Always return true if update is in progress
+        $stepData = Rootd_Installer::getStepData();
+        if (substr($stepData['current_step'], 0, 6) == 'update') {
+            return true;
+        }
+        
+        if (class_exists('Rootd', false)) {
+            $localVersion   = Rootd::getVersion();
+            $currentVersion = self::getCoreVersionInfo()->getVersion();
+
+            return version_compare($localVersion, $currentVersion) === -1;
+        }
+
+        return false;
+    }
+
+    /**
      * Trigger framework un-install.
      * 
      * @return void
@@ -123,23 +165,38 @@ final class Rootd_Watchdog
     }
 
     /**
+     * Update the framework core.
+     * 
+     * @return void
+     */
+    public static function updateCore()
+    {
+        if (!current_user_can('activate_plugins')) {
+            return false;
+        }
+
+        Rootd_Installer::update();
+    }
+
+    /**
      * Verify that the Rootd Framework is installed.
      * 
      * @return void
      */
     public static function verify()
     {
-        if (
-            (
-                class_exists('Rootd_Base', false) ||
-                file_exists(self::getRootdBasePath())
-            ) &&
+        if (self::needsCoreUpdate()) { // Now check for core updates
+            add_action('admin_init', array(__CLASS__, 'updateCore'));
+
+            return false;
+        } else if (
+            class_exists('Rootd', false) &&
             !self::hasStepData()
-        )
-        {
+        ) {
             return true;
-        } else if(is_admin()) {
+        } else if (is_admin()) {
             add_action('admin_init', array(__CLASS__, 'install'));
+
             return false;
         }
 

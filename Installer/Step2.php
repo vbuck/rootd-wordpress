@@ -41,7 +41,10 @@ class Rootd_Installer_Step2
         }
 
         // 'mu-plugins' must already exist and be writeable, or else the 'wp-content' folder must be writeable
-        if ( file_exists($this->getMuPluginPath()) && !is_writeable($this->getMuPluginPath()) ) {
+        if ( 
+            !file_exists($this->getMuPluginPath()) ||
+            ( file_exists($this->getMuPluginPath()) && !is_writeable($this->getMuPluginPath()) )
+         ) {
             if(!is_writeable(WP_CONTENT_DIR)) {
                 $this->addError('
                     We do not have permission to write to this folder: <code>' . WP_CONTENT_DIR . '</code> 

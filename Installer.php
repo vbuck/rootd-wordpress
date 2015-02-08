@@ -11,6 +11,7 @@
 class Rootd_Installer 
 {
 
+    const CORE_VERSION_URL  = 'http://www.rickbuczynski.com/get-rootd-framework/version';
     const DOWNLOAD_URL      = 'http://www.rickbuczynski.com/get-rootd-framework/download';
     const PARAM_PREFIX      = 'rootd_';
     const REQUIRED_VERSION  = '5.3.0';
@@ -18,8 +19,7 @@ class Rootd_Installer
 
     /* @var $_instance Rootd_Installer */
     private static $_instance;
-
-    protected $_steps = array();
+    private static $_steps = array();
 
     /**
      * Autoload installation classes.
@@ -97,17 +97,17 @@ class Rootd_Installer
         $stepData       = $this->getStepData();
         $currentStep    = $stepData['current_step'];
 
-        reset($this->_steps);
+        reset(self::$_steps);
 
         // Set default step
         if (!$currentStep) {
-            $currentStep = key($this->_steps);
+            $currentStep = key(self::$_steps);
         }
 
         // Requested step to install must match current
         if ( $params['action'] == 'complete' && $params['install'] !== $currentStep ) {
             return $this;
-        } else if ( $params['action'] == 'complete' && $this->_steps[$currentStep]->install() ) { // Run step installation if requested
+        } else if ( $params['action'] == 'complete' && self::$_steps[$currentStep]->install() ) { // Run step installation if requested
             $stepData['is_completed'] = true;
         }
 
@@ -148,8 +148,8 @@ class Rootd_Installer
             }
 
             // ID must be supplied or set in the step class
-            if ( $step->getId() && !array_key_exists($step->getId(), $this->_steps) ) {
-                $this->_steps[$step->getId()] = $step;
+            if ( $step->getId() && !array_key_exists($step->getId(), self::$_steps) ) {
+                self::$_steps[$step->getId()] = $step;
             }
         }
 
@@ -192,7 +192,7 @@ class Rootd_Installer
         $currentStep    = $this->getCurrentStep();
         $index          = 1;
 
-        foreach ($this->_steps as $key => $value) {
+        foreach (self::$_steps as $key => $value) {
             if ($key == $currentStep) {
                 return $index;
             }
@@ -236,24 +236,24 @@ class Rootd_Installer
     {
         $currentStep = $this->getCurrentStep();
 
-        reset($this->_steps);
+        reset(self::$_steps);
 
         // Set default step
         if (!$currentStep) {
-            $currentStep = key($this->_steps);
+            $currentStep = key(self::$_steps);
         }
 
         while (
-            !is_null((key($this->_steps))) && 
-            key($this->_steps) !== $currentStep
+            !is_null((key(self::$_steps))) && 
+            key(self::$_steps) !== $currentStep
         )
         {
-            next($this->_steps);
+            next(self::$_steps);
         }
 
-        next($this->_steps);
+        next(self::$_steps);
 
-        return key($this->_steps);
+        return key(self::$_steps);
     }
 
     /**
@@ -279,14 +279,14 @@ class Rootd_Installer
      * 
      * @return array
      */
-    public function getStepData()
+    public static function getStepData()
     {
         $data = array(
             'last_step'         => null,
             'current_step'      => null,
             'is_completed'      => false,
             'install_complete'  => false,
-            'total_steps'       => count($this->_steps)
+            'total_steps'       => count(self::$_steps)
         );
 
         if (isset($_SESSION[self::SESSION_DATA_KEY])) {
@@ -303,7 +303,7 @@ class Rootd_Installer
      */
     public function getTotalSteps()
     {
-        return count($this->_steps);
+        return count(self::$_steps);
     }
 
     /**
@@ -316,8 +316,8 @@ class Rootd_Installer
         $stepData       = $this->getStepData();
         $currentStep    = $stepData['current_step'];
 
-        if ($currentStep) {
-            echo $this->_steps[$currentStep]
+        if (self::$_steps[$currentStep] instanceof Rootd_Installer_Step_Abstract) {
+            echo self::$_steps[$currentStep]
                 ->render();
         }
     }
@@ -420,6 +420,26 @@ class Rootd_Installer
         return is_file($path) ?
             @unlink($path) :
             array_map(array(__CLASS__, __FUNCTION__), glob($path.'/*')) == @rmdir($path);
+    }
+
+    /**
+     * Update the framework core.
+     * 
+     * @return void
+     */
+    public static function update()
+    {
+        if (!self::$_instance) {
+            self::_loadFiles();
+
+            self::$_instance = new Rootd_Installer();
+            
+            self::$_instance
+                ->addStep('Rootd_Installer_Update_Step1')
+                ->addStep('Rootd_Installer_Update_Step2');
+
+            self::$_instance->route();
+        }
     }
 
 }

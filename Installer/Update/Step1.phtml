@@ -1,0 +1,11 @@
+<?php /* @var $this Rootd_Installer_Update_Step1 */ ?>
+<div class="update-nag step-content">
+    <form action="<?php echo $this->getAction(); ?>" method="post" enctype="multipart/form-data">
+        <span class="install-progress"><?php echo $this->getProgress(); ?></span>
+        <h3><?php _e('Update Notification'); ?></h3>
+        <p><?php _e("An update is available to Rootd Framework Core ({$this->getUpdateVersion()}). Please click OK to complete this process."); ?></p>
+        <p>
+            <input type="submit" class="button action" value="<?php _e('OK'); ?>">
+        </p>
+    </form>
+</div>

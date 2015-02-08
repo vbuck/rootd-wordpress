@@ -10,13 +10,15 @@
  * License:         MIT
  * Text-Domain:     rootd-watchdog
  */
+ini_set('display_errors', 1);
+if (is_admin()) {
+    session_start();
 
-session_start();
+    require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Watchdog.php';
 
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Watchdog.php';
+    if (!class_exists('Rootd_Watchdog', false)) {
+        throw new Exception('Failed to initialize Rootd Framework because the plugin observer was not found.');
+    }
 
-if (!class_exists('Rootd_Watchdog', false)) {
-    throw new Exception('Failed to initialize Rootd Framework because the plugin observer was not found.');
+    Rootd_Watchdog::initialize(__FILE__);
 }
-
-Rootd_Watchdog::initialize(__FILE__);
